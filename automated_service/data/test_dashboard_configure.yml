@@ -1,0 +1,59 @@
+metrics:
+  - metric:
+      id: revenue_2024_metric
+      name: Meet's SME Revenue 2024 Metrics
+      type: line
+      data:
+        input_file: /home/bacancy/workspace/Calon/bacancy/automated_service/data/test_metrics.xlsx
+        type: xlsx
+        # additional configurations such as limit, header row can be added in the future
+  - metric:
+      id: bookings_2024_metric
+      name: Meet's' SME Booking 2024 Metrics
+      type: line
+      data:
+        input_file: /home/bacancy/workspace/Calon/bacancy/automated_service/data/test_metrics.xlsx
+        type: xlsx
+        metric_id: ABC123 #optinal field (filter out the records based on metric_id)
+        # additional configurations such as limit, header row can be added in the future
+
+charts:
+  - chart:
+      id: line_chart_for_revenue_2024_metric
+      name: Line chart for revenue 2024 metric #optional
+      type: line
+      title: Revenue & Booking 2024 #optional
+      metrics:
+        - metric:
+            metric_id: revenue_2024_metric
+            x_axis: invoice_date
+            y_axis: revenue
+            x_label: Invoice Date #optional
+            y_label: Revenue #optional
+            pivot_column: region #optional
+        - metric:
+            metric_id: booking_2024_metric
+            x_axis: invoice_date
+            y_axis: revenue
+            x_label: Invoice Date #optional
+            y_label: Revenue #optional
+            pivot_column: region #optional
+  - chart:
+      id: bar_chart_for_booking_2024_metric
+      name: Bar chart for Booking 2024 metric #optional
+      type: bar
+      title: Booking 2024 #optional
+      metrics:
+        - metric:
+            metric_id: booking_2024_metric
+            x_axis: invoice_date
+            y_axis: booking
+            x_label: Invoice Date #optional
+            y_label: Bookings #optional
+            pivot_column: region #optional
+
+dashboard:
+  element:
+    type: chart
+    chart_id: line_chart_for_revenue_2024_metric
+    # options for
