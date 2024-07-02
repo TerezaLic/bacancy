@@ -1,7 +1,9 @@
 import yaml
 from base_metrics import BaseMetrics
 from typing import List, Dict
-
+from dashboard_working import process_raw_data, line_chart
+import altair as alt
+import streamlit as st
 
 class MetricsFactory:
     """
@@ -64,10 +66,36 @@ def read_configurations(file_path: str = "") -> Dict:
 
 
 if __name__ == "__main__":
-    config = read_configurations("/home/bacancy/workspace/Calon/bacancy/automated_service/data/test_dashboard_configure.yml")
+    config = read_configurations("/home/bacancy/DevangiRami/projects/Calon/code/bacancy/automated_service/data/test_dashboard_configure.yml")
     mf = MetricsFactory(config)
     objs = mf()
     for mf_obj in objs:
         mf_obj.load_data()
         print(mf_obj.id_, mf_obj.dataframe.shape)
         print(mf_obj.dataframe.head())
+
+    print("start...")
+    # Fields input - will take from YML
+    invoice_date = "primary_datetime_dimension_value"
+    revenue = "metric_value"
+    region = "dimension_1_string_value"
+
+    fields = {
+        'x' : invoice_date,
+        'y' : revenue,
+        'pivot_column' : region
+    }
+    
+    fields1 = {
+        'x' : invoice_date,
+        'y' : revenue,
+    }
+    
+    
+    obj1 = objs[0]
+    processed_response = process_raw_data(obj1.dataframe, fields)
+    chart = line_chart(processed_response, fields1)
+    
+    st.set_page_config(layout='wide')
+    st.title("Line Chart from Excel Data")
+    st.altair_chart(chart, use_container_width=True)
