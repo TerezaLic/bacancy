@@ -16,7 +16,7 @@ class BaseMetrics:
         self.name = name
         self.file_path = file_path
         self.file_type = file_type
-        self.kwargs = kwargs
+        self.other_params = kwargs
         self.dataframe = None
 
     def load_data(self, **kwargs):
@@ -34,18 +34,37 @@ class BaseMetrics:
 
         self.dataframe = dataframe
 
-        if kwargs:
+        if kwargs or self.other_params:
             # Extra arguments then configure dataframe accordingly
-            dataframe = self.configure_dataframe(dataframe, **kwargs)
+            params = kwargs or self.other_params
+            self.dataframe = self.configure_dataframe(self.dataframe, **params)
 
-        return dataframe
+        return self.dataframe
 
-    def configure_dataframe(self, dataframe: pd.DataFrame, **kwargs: dict):
+    def configure_dataframe(self, dataframe: pd.DataFrame = None, **kwargs: dict):
         """
 
         :param dataframe:
         :param kwargs:
         :return: dataframe
         """
+
+        # if dataframe is not passed then use loaded dataframe as default.
+        if not isinstance(dataframe, pd.DataFrame):
+            dataframe = self.dataframe
+
+        dataframe.columns = dataframe.iloc[0]
+        dataframe = dataframe.drop([0])
+
+        if kwargs.get("filter"):
+
+            # filter records from dataframe
+            queries = []
+            for key, value in kwargs.get('filter').items():
+                queries.append(f"{key} == '{value}'")
+
+            query_string = " & ".join(queries)
+            dataframe = dataframe.query(query_string)
+
         return dataframe
 

@@ -12,9 +12,10 @@ metrics:
       name: Meet's' SME Booking 2024 Metrics
       type: line
       data:
-        input_file: /home/bacancy/workspace/Calon/bacancy/automated_service/data/test_metrics.xlsx
+        input_file: /home/bacancy/workspace/Calon/bacancy/automated_service/data/test_metrics 2.xlsx
         type: xlsx
-        metric_id: ABC123 #optinal field (filter out the records based on metric_id)
+        filter:
+          metric_id: ABC123 #optinal field (filter out the records based on metric_id)
         # additional configurations such as limit, header row can be added in the future
 
 charts:

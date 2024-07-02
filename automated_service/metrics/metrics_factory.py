@@ -69,3 +69,5 @@ if __name__ == "__main__":
     objs = mf()
     for mf_obj in objs:
         mf_obj.load_data()
+        print(mf_obj.id_, mf_obj.dataframe.shape)
+        print(mf_obj.dataframe.head())
